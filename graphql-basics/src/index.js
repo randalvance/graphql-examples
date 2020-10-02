@@ -2,8 +2,10 @@ import { GraphQLServer } from 'graphql-yoga';
 
 const typeDefs = `
     type Query {
+        greeting(name: String): String!
         me: User!
         post: Post!
+        add(first: Int!, second: Int!): Int!
     }
 
     type User {
@@ -23,6 +25,12 @@ const typeDefs = `
 
 const resolvers = {
     Query: {
+        greeting(parent, args, ctx, info) {
+            if (args.name) {
+                return `Hello, ${args.name}!`;
+            }
+            return 'Hello Stranger!';
+        },
         me() {
             return {
                 id: '123098',
@@ -37,6 +45,9 @@ const resolvers = {
                 body: 'This is my awesome post.',
                 published: true,
             }
+        },
+        add(parent, args, ctx, info) {
+            return args.first + args.second;
         }
     }
 };
