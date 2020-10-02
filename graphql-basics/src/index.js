@@ -1,12 +1,11 @@
 import { GraphQLServer } from 'graphql-yoga';
+import { users } from './data/users';
 
 const typeDefs = `
     type Query {
-        greeting(name: String): String!
+        users: [User!]!
         me: User!
         post: Post!
-        add(numbers: [Float!]!): Int!
-        grades: [Int!]!
     }
 
     type User {
@@ -26,11 +25,8 @@ const typeDefs = `
 
 const resolvers = {
     Query: {
-        greeting(parent, args, ctx, info) {
-            if (args.name) {
-                return `Hello, ${args.name}!`;
-            }
-            return 'Hello Stranger!';
+        users(parent, args, ctx, info) {
+            return users;
         },
         me() {
             return {
@@ -46,15 +42,6 @@ const resolvers = {
                 body: 'This is my awesome post.',
                 published: true,
             }
-        },
-        add(parent, args, ctx, info) {
-            if (args.numbers.length == 0) {
-                return 0;
-            }
-            return args.numbers.reduce((sum, curr) => sum + curr , 0);
-        },
-        grades(parent, args, ctx, info) {
-            return [99, 80, 93];
         }
     }
 };
