@@ -21,6 +21,7 @@ const typeDefs = `
         title: String!
         body: String!
         published: Boolean!
+        author: User!
     }
 `;
 
@@ -49,6 +50,12 @@ const resolvers = {
                 const matchingBody = post.body.toLowerCase().includes(searchTerm);
                 return matchingTitle || matchingBody;
             });
+        }
+    },
+    Post: {
+        author(parent, args, ctx, info) {
+            const authorId = parent.author;
+            return users.find(u => u.id === authorId);
         }
     }
 };
