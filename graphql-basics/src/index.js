@@ -1,11 +1,12 @@
 import { GraphQLServer } from 'graphql-yoga';
 import { users } from './data/users';
+import { posts } from './data/posts';
 
 const typeDefs = `
     type Query {
         users(query: String): [User!]!
         me: User!
-        post: Post!
+        posts(query: String): [Post!]!
     }
 
     type User {
@@ -38,13 +39,16 @@ const resolvers = {
                 email: 'randal@randalvance.net',
             }
         },
-        post() {
-            return {
-                id: '12345',
-                title: 'My Awesome Post',
-                body: 'This is my awesome post.',
-                published: true,
+        posts(parent, args, ctx, info) {
+            if (!args.query) {
+                return posts;
             }
+            return posts.filter(post => {
+                const searchTerm = args.query.toLowerCase();
+                const matchingTitle = post.title.toLowerCase().includes(searchTerm);
+                const matchingBody = post.body.toLowerCase().includes(searchTerm);
+                return matchingTitle || matchingBody;
+            });
         }
     }
 };
