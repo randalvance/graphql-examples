@@ -2,30 +2,41 @@ import { GraphQLServer } from 'graphql-yoga';
 
 const typeDefs = `
     type Query {
+        me: User!
+        post: Post!
+    }
+
+    type User {
+        id: ID!
+        name: String!
+        email: String!
+        age: Int
+    }
+
+    type Post {
+        id: ID!
         title: String!
-        price: Float!
-        releaseYear: Int
-        rating: Float
-        inStock: Boolean!
+        body: String!
+        published: Boolean!
     }
 `;
 
 const resolvers = {
     Query: {
-        title() {
-            return 'The War of Art';
+        me() {
+            return {
+                id: '123098',
+                name: 'Randal',
+                email: 'randal@randalvance.net',
+            }
         },
-        price() {
-            return 12.99;
-        },
-        releaseYear() {
-            return null;
-        },
-        rating() {
-            return 5;
-        },
-        inStock() {
-            return true;
+        post() {
+            return {
+                id: '12345',
+                title: 'My Awesome Post',
+                body: 'This is my awesome post.',
+                published: true,
+            }
         }
     }
 };
