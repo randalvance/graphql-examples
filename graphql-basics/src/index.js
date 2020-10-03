@@ -125,7 +125,15 @@ const resolvers = {
             }
 
             users = users.filter(u => u.id !== userId);
-            posts = posts.filter(p => p.author !== userId);
+            posts = posts.filter((post) => {
+                const match = post.author === userId;
+
+                if (match) {
+                    comments = comments.filter(c => c.post === post.id);
+                }
+
+                return !match;
+            });
             comments = comments.filter(c => c.author !== userId);
 
             return userToDelete;
