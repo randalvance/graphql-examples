@@ -14,9 +14,9 @@ const typeDefs = `
     }
 
     type Mutation {
-        createUser(name: String!, email: String!, age: Int): User!
-        createPost(title: String!, body: String!, published: Boolean!, authorId: ID!): Post!
-        createComment(text: String!, authorId: ID!, postId: ID!): Comment!
+        createUser(data: CreateUserInput!): User!
+        createPost(data: CreatePostInput!): Post!
+        createComment(data: CreateCommentInput!): Comment!
     }
 
     type User {
@@ -42,6 +42,25 @@ const typeDefs = `
         text: String!
         author: User!
         post: Post
+    }
+
+    input CreateUserInput {
+        name: String!
+        email: String!
+        age: Int
+    }
+
+    input CreatePostInput {
+        title: String!
+        body: String!
+        published: Boolean!
+        authorId: ID!
+    }
+
+    input CreateCommentInput {
+        text: String!
+        authorId: ID!
+        postId: ID!
     }
 `;
 
@@ -77,15 +96,15 @@ const resolvers = {
     },
     Mutation: {
         createUser(parent, args, ctx, info) {
-            const emailTaken = users.some(u => u.email.toLowerCase() === args.email.toLowerCase());
+            const emailTaken = users.some(u => u.email.toLowerCase() === args.data.email.toLowerCase());
 
             if (emailTaken) {
-                throw new Error(`Email ${args.email} is already taken!`);
+                throw new Error(`Email ${args.data.email} is already taken!`);
             }
 
             const user = {
                 id: uuid(),
-                ...args,
+                ...args.data,
             };
 
             users.push(user);
@@ -93,7 +112,7 @@ const resolvers = {
             return user;
         },
         createPost(parent, args, ctx, info) {
-            const { title, body, published, authorId } = args;
+            const { title, body, published, authorId } = args.data;
 
             const userExists = users.some(u => u.id === authorId);
 
@@ -114,7 +133,7 @@ const resolvers = {
             return post;
         },
         createComment(parent, args, ctx, info) {
-            const { text, authorId, postId } = args;
+            const { text, authorId, postId } = args.data;
 
             const userExists = users.some(u => u.id === authorId);
 
