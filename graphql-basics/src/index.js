@@ -1,9 +1,13 @@
 import { GraphQLServer } from 'graphql-yoga';
 import { v4 as uuid } from 'uuid';
 
-import { users } from './data/users';
-import { posts } from './data/posts';
-import { comments } from './data/comments';
+import { users as origUsers } from './data/users';
+import { posts as origPosts } from './data/posts';
+import { comments as origComments } from './data/comments';
+
+let users = origUsers;
+let posts = origPosts;
+let comments = origComments;
 
 const typeDefs = `
     type Query {
@@ -15,6 +19,7 @@ const typeDefs = `
 
     type Mutation {
         createUser(data: CreateUserInput!): User!
+        deleteUser(userId: ID!): User!
         createPost(data: CreatePostInput!): Post!
         createComment(data: CreateCommentInput!): Comment!
     }
@@ -110,6 +115,20 @@ const resolvers = {
             users.push(user);
 
             return user;
+        },
+        deleteUser(parent, args, ctx, info) {
+            const { userId } = args;
+            const userToDelete = users.find(u => u.id === userId);
+
+            if (!userToDelete) {
+                throw new Error(`User with id ${userId} does not exist!`);
+            }
+
+            users = users.filter(u => u.id !== userId);
+            posts = posts.filter(p => p.author !== userId);
+            comments = comments.filter(c => c.author !== userId);
+
+            return userToDelete;
         },
         createPost(parent, args, ctx, info) {
             const { title, body, published, authorId } = args.data;
