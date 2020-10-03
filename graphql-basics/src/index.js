@@ -77,18 +77,15 @@ const resolvers = {
     },
     Mutation: {
         createUser(parent, args, ctx, info) {
-            const { name, email, age } = args;
-            const emailTaken = users.some(u => u.email.toLowerCase() === email.toLowerCase());
+            const emailTaken = users.some(u => u.email.toLowerCase() === args.email.toLowerCase());
 
             if (emailTaken) {
-                throw new Error(`Email ${email} is already taken!`);
+                throw new Error(`Email ${args.email} is already taken!`);
             }
 
             const user = {
                 id: uuid(),
-                name,
-                email,
-                age,
+                ...args,
             };
 
             users.push(user);
