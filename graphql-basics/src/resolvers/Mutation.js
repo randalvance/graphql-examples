@@ -198,12 +198,15 @@ export const Mutation = {
     db.comments.push(comment);
 
     pubSub.publish(`comments of post ${postId}`, {
-      comment,
+      comment: {
+        mutation: 'CREATED',
+        data: comment,
+      }
     });
 
     return comment;
   },
-  updateComment(parent, { commentId, data }, { db }, info) {
+  updateComment(parent, { commentId, data }, { db, pubSub }, info) {
     const comment = db.comments.find((c) => c.id === commentId);
 
     if (!comment) {
@@ -214,9 +217,16 @@ export const Mutation = {
       comment.text = data.text;
     }
 
+    pubSub.publish(`comments of post ${comment.post}`, {
+      comment: {
+        mutation: 'UPDATED',
+        data: comment,
+      }
+    });
+
     return comment;
   },
-  deleteComment(parent, args, { db }, info) {
+  deleteComment(parent, args, { db, pubSub }, info) {
     const { commentId } = args;
     const commentIndex = db.comments.findIndex((c) => c.id === commentId);
 
@@ -224,10 +234,17 @@ export const Mutation = {
       throw new Error(`Comment with ID ${commentId} does not exist!`);
     }
 
-    const deletedComments = db.comments.splice(commentIndex, 1);
+    const [deletedComment] = db.comments.splice(commentIndex, 1);
 
     db.comments = db.comments.filter((comment) => comment.id !== commentId);
 
-    return deletedComments[0];
+    pubSub.publish(`comments of post ${deletedComment.post}`, {
+      comment: {
+        mutation: 'DELETED',
+        data: deletedComment,
+      },
+    });
+
+    return deletedComment;
   },
 };
