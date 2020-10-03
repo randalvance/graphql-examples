@@ -87,6 +87,27 @@ export const Mutation = {
 
         return post;
     },
+    updatePost(parent, { postId, data }, { db }, info) {
+        const post = db.posts.find(p => p.id === postId);
+
+        if (!post) {
+            throw new Error(`Post with id ${postId} does not exist!`);
+        }
+
+        if (typeof data.title === 'string') {
+            post.title = data.title;
+        }
+
+        if (typeof data.body === 'string') {
+            post.body = data.body;
+        }
+
+        if (typeof data.published === 'boolean') {
+            post.published = data.published;
+        }
+
+        return post;
+    },
     deletePost(parent, args, { db }, info) {
         const { postId } = args;
         const postIndex = db.posts.findIndex(p => p.id === postId);
@@ -128,6 +149,19 @@ export const Mutation = {
         };
 
         db.comments.push(comment);
+
+        return comment;
+    },
+    updateComment(parent, { commentId, data }, { db }, info) {
+        const comment = db.comments.find(c => c.id === commentId);
+
+        if (!comment) {
+            throw new Error(`Comment with ID ${commentId} does not exist!`);
+        }
+
+        if (typeof data.text === 'string') {
+            comment.text = data.text;
+        }
 
         return comment;
     },
