@@ -17,6 +17,33 @@ export const Mutation = {
 
         return user;
     },
+    updateUser(parent, { userId, data }, { db }, info) {
+        const user = db.users.find(u => u.id === userId);
+
+        if (!user) {
+            throw new Error(`User with ID ${userId} does not exist!`);
+        }
+
+        if (typeof data.email === 'string') {
+            const isEmailTaken = db.users.some(u => u.email.toLowerCase() === data.email.toLowerCase());
+
+            if (isEmailTaken) {
+                throw new Error(`Email ${data.email} is already registered!`);
+            }
+
+            user.email = data.email;
+        }
+
+        if (typeof data.name === 'string') {
+            user.name = data.name;
+        }
+
+        if (typeof data.age !== 'undefined') {
+            user.age = data.age;
+        }
+
+        return user;
+    },
     deleteUser(parent, args, { db }, info) {
         const { userId } = args;
         const userToDelete = db.users.find(u => u.id === userId);
