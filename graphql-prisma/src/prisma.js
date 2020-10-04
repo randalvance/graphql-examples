@@ -5,6 +5,45 @@ const prisma = new Prisma({
     endpoint: 'http://localhost:4466',
 });
 
+const createPostForUser = async (authorId, data) => {
+    const post = await prisma.mutation.createPost({
+        data: {
+            ...data,
+            author: {
+                connect: {
+                    id: authorId,
+                },
+            },
+        },
+    }, `{ id }`);
+
+    const user = await prisma.query.user({
+        where: {
+            id: authorId,
+        },
+    }, `{
+        id
+        name
+        email
+        posts {
+            id
+            title
+            body
+            published
+        }
+    }`);
+
+    return user;
+};
+
+createPostForUser('ckfus90kr001g0793f80bj17s', {
+    title: 'A Dog\'s Tale',
+    body: 'The dog died at the end.',
+    published: true
+}).then((user) => {
+    console.log(JSON.stringify(user, null, 4));
+});
+
 /*
 prisma.query.users(null, `{
     id
