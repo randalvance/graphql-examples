@@ -38,74 +38,14 @@ export const Mutation = {
       }
     } }, info);
   },
-  updatePost(parent, { postId, data }, { pubSub, db }, info) {
-    const post = db.posts.find((p) => p.id === postId);
-
-    if (!post) {
-      throw new Error(`Post with id ${postId} does not exist!`);
-    }
-
-    const originalPost = { ...post };
-
-    if (typeof data.title === "string") {
-      post.title = data.title;
-    }
-
-    if (typeof data.body === "string") {
-      post.body = data.body;
-    }
-
-    if (typeof data.published === "boolean") {
-      post.published = data.published;
-
-      if (originalPost.published && !post.published) {
-        pubSub.publish('posts', {
-          post: {
-            mutation: 'DELETED',
-            data: originalPost
-          },
-        });
-      } else if (!originalPost.published && post.published) {
-        pubSub.publish('posts', {
-          post: {
-            mutation: 'CREATED',
-            data: post,
-          }
-        });
-      }
-    } else if (post.published) {
-      pubSub.publish('posts', {
-        post: {
-          mutation: 'UPDATED',
-          data: post,
-        },
-      });
-    }
-
-    return post;
+  updatePost(parent, { postId, data }, { prisma }, info) {
+    return prisma.mutation.updatePost({
+      data,
+      where: { id: postId },
+    }, info);
   },
-  deletePost(parent, args, { pubSub, db }, info) {
-    const { postId } = args;
-    const postIndex = db.posts.findIndex((p) => p.id === postId);
-
-    if (postIndex === -1) {
-      throw new Error(`Post with ID ${postId} does not exist!`);
-    }
-
-    const [deletedPost] = db.posts.splice(postIndex, 1);
-
-    db.comments = db.comments.filter((comment) => comment.post !== postId);
-
-    if (deletedPost.published) {
-      pubSub.publish('posts',  {
-        post: {
-          mutation: 'DELETED',
-          data: deletedPost,
-        }
-      })
-    }
-
-    return deletedPost;
+  deletePost(parent, { postId }, { pubSub, db, prisma }, info) {
+    return prisma.mutation.deletePost({ where: { id: postId } }, info);
   },
   createComment(parent, args, { db, pubSub }, info) {
     const { text, authorId, postId } = args.data;
