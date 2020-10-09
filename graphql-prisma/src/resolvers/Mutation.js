@@ -24,10 +24,14 @@ export const Mutation = {
       token: jwt.sign({ userId: user.id }, config.jwtSecret),
     };
   },
-  async updateUser(parent, { userId, data }, { prisma }, info) {
+  async updateUser(parent, { data }, { prisma, request }, info) {
+    const userId = getUserId(request);
+
     return await prisma.mutation.updateUser({ data, where: { id: userId }}, info);
   },
-  async deleteUser(parent, { userId }, { prisma }, info) {
+  async deleteUser(parent, args, { prisma, request }, info) {
+    const userId = getUserId(request);
+
     const userExists = await prisma.exists.User({ id: userId });
 
     if (!userExists) {
@@ -52,22 +56,48 @@ export const Mutation = {
       }
     } }, info);
   },
-  updatePost(parent, { postId, data }, { prisma }, info) {
+  async updatePost(parent, { postId, data }, { prisma, request }, info) {
+    const userId = getUserId(request);
+    const postExists = await prisma.exists.Post({
+      id: postId,
+      author: {
+        id: userId,
+      },
+    });
+
+    if (!postExists) {
+      throw new Error("You can't update the post you don't own.");
+    }
+
     return prisma.mutation.updatePost({
       data,
       where: { id: postId },
     }, info);
   },
-  deletePost(parent, { postId }, { prisma }, info) {
+  async deletePost(parent, { postId }, { prisma, request }, info) {
+    const userId = getUserId(request);
+    const postExists = await prisma.exists.Post({
+      id: postId,
+      author: {
+        id: userId,
+      },
+    });
+
+    if (!postExists) {
+      throw new Error("You can't delete the post you don't own.");
+    }
+
     return prisma.mutation.deletePost({ where: { id: postId } }, info);
   },
-  createComment(parent, { data }, { prisma }, info) {
+  createComment(parent, { data }, { prisma, request }, info) {
+    const userId = getUserId(request);
+
     return prisma.mutation.createComment({
       data: {
         text: data.text,
         author: {
           connect: {
-            id: data.authorId,
+            id: userId,
           },
         },
         post: {
@@ -78,7 +108,18 @@ export const Mutation = {
       },
     }, info);
   },
-  updateComment(parent, { commentId, data }, { prisma }, info) {
+  async updateComment(parent, { commentId, data }, { prisma, request }, info) {
+    const userId = getUserId(request);
+    const commentExists = await prisma.exists.Comment({
+      id: commentId,
+      author: {
+        id: userId,
+      },
+    });
+
+    if (!commentExists) {
+      throw new Error("You can't update the comment you don't own.");
+    }
     return prisma.mutation.updateComment({
       data,
       where: {
@@ -86,7 +127,18 @@ export const Mutation = {
       },
     }, info);
   },
-  deleteComment(parent, { commentId }, { prisma }, info) {
+  async deleteComment(parent, { commentId }, { prisma, request }, info) {
+    const userId = getUserId(request);
+    const commentExists = await prisma.exists.Comment({
+      id: commentId,
+      author: {
+        id: userId,
+      },
+    });
+
+    if (!commentExists) {
+      throw new Error("You can't delete the comment you don't own.");
+    }
     return prisma.mutation.deleteComment({
       where: {
         id: commentId,
