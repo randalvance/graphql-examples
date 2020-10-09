@@ -49,12 +49,12 @@ type Comment {
 
 type PostSubscriptionPayload {
   mutation: String!
-  data: Post!
+  node: Post
 }
 
 type CommentSubscriptionPayload {
   mutation: String!
-  data: Comment!
+  node: Comment
 }
 
 input CreateUserInput {
