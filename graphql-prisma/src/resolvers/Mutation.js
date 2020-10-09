@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 export const Mutation = {
-  async createUser(parent, args, { db, prisma }, info) {
+  async createUser(parent, args, { prisma }, info) {
     const emailTaken = await prisma.exists.User({ email: args.data.email });
 
     if (emailTaken) {
@@ -12,10 +12,10 @@ export const Mutation = {
 
     return user;
   },
-  async updateUser(parent, { userId, data }, { db, prisma }, info) {
+  async updateUser(parent, { userId, data }, { prisma }, info) {
     return await prisma.mutation.updateUser({ data, where: { id: userId }}, info);
   },
-  async deleteUser(parent, { userId }, { db, prisma }, info) {
+  async deleteUser(parent, { userId }, { prisma }, info) {
     const userExists = await prisma.exists.User({ id: userId });
 
     if (!userExists) {
@@ -26,7 +26,7 @@ export const Mutation = {
       id: userId,
     }}, info);
   },
-  async createPost(parent, args, { db, pubSub, prisma }, info) {
+  async createPost(parent, args, { prisma }, info) {
     return prisma.mutation.createPost({ data: {
       title: args.data.title,
       body: args.data.body,
@@ -44,85 +44,39 @@ export const Mutation = {
       where: { id: postId },
     }, info);
   },
-  deletePost(parent, { postId }, { pubSub, db, prisma }, info) {
+  deletePost(parent, { postId }, { prisma }, info) {
     return prisma.mutation.deletePost({ where: { id: postId } }, info);
   },
-  createComment(parent, args, { db, pubSub }, info) {
-    const { text, authorId, postId } = args.data;
-
-    const userExists = db.users.some((u) => u.id === authorId);
-
-    if (!userExists) {
-      throw new Error(`User with id ${authorId} does not exist!`);
-    }
-
-    const post = db.posts.find((p) => p.id === postId);
-
-    if (!post) {
-      throw new Error(`Post with id ${postId} does not exist!`);
-    }
-
-    if (!post.published) {
-      throw new Error(`Post with id ${postId} is not yet published!`);
-    }
-
-    const comment = {
-      id: uuid(),
-      text,
-      author: authorId,
-      post: postId,
-    };
-
-    db.comments.push(comment);
-
-    pubSub.publish(`comments of post ${postId}`, {
-      comment: {
-        mutation: 'CREATED',
-        data: comment,
-      }
-    });
-
-    return comment;
-  },
-  updateComment(parent, { commentId, data }, { db, pubSub }, info) {
-    const comment = db.comments.find((c) => c.id === commentId);
-
-    if (!comment) {
-      throw new Error(`Comment with ID ${commentId} does not exist!`);
-    }
-
-    if (typeof data.text === "string") {
-      comment.text = data.text;
-    }
-
-    pubSub.publish(`comments of post ${comment.post}`, {
-      comment: {
-        mutation: 'UPDATED',
-        data: comment,
-      }
-    });
-
-    return comment;
-  },
-  deleteComment(parent, args, { db, pubSub }, info) {
-    const { commentId } = args;
-    const commentIndex = db.comments.findIndex((c) => c.id === commentId);
-
-    if (commentIndex === -1) {
-      throw new Error(`Comment with ID ${commentId} does not exist!`);
-    }
-
-    const [deletedComment] = db.comments.splice(commentIndex, 1);
-
-    db.comments = db.comments.filter((comment) => comment.id !== commentId);
-
-    pubSub.publish(`comments of post ${deletedComment.post}`, {
-      comment: {
-        mutation: 'DELETED',
-        data: deletedComment,
+  createComment(parent, { data }, { prisma }, info) {
+    return prisma.mutation.createComment({
+      data: {
+        text: data.text,
+        author: {
+          connect: {
+            id: data.authorId,
+          },
+        },
+        post: {
+          connect: {
+            id: data.postId,
+          },
+        },
       },
-    });
-
-    return deletedComment;
+    }, info);
+  },
+  updateComment(parent, { commentId, data }, { prisma }, info) {
+    return prisma.mutation.updateComment({
+      data,
+      where: {
+        id: commentId,
+      },
+    }, info);
+  },
+  deleteComment(parent, { commentId }, { prisma }, info) {
+    return prisma.mutation.deleteComment({
+      where: {
+        id: commentId,
+      },
+    }, info)
   },
 };
