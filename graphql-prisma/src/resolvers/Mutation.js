@@ -12,75 +12,31 @@ export const Mutation = {
 
     return user;
   },
-  updateUser(parent, { userId, data }, { db }, info) {
-    const user = db.users.find((u) => u.id === userId);
-
-    if (!user) {
-      throw new Error(`User with ID ${userId} does not exist!`);
-    }
-
-    if (typeof data.email === "string") {
-      const isEmailTaken = db.users.some(
-        (u) => u.email.toLowerCase() === data.email.toLowerCase()
-      );
-
-      if (isEmailTaken) {
-        throw new Error(`Email ${data.email} is already registered!`);
-      }
-
-      user.email = data.email;
-    }
-
-    if (typeof data.name === "string") {
-      user.name = data.name;
-    }
-
-    if (typeof data.age !== "undefined") {
-      user.age = data.age;
-    }
-
-    return user;
+  async updateUser(parent, { userId, data }, { db, prisma }, info) {
+    return await prisma.mutation.updateUser({ data, where: { id: userId }}, info);
   },
-  async deleteUser(parent, args, { db, prisma }, info) {
-    const userExists = await prisma.exists.User({ id: args.userId });
+  async deleteUser(parent, { userId }, { db, prisma }, info) {
+    const userExists = await prisma.exists.User({ id: userId });
 
     if (!userExists) {
-      throw new Error(`User with id ${args.userId} does not exist!`);
+      throw new Error(`User with id ${userId} does not exist!`);
     }
 
     return prisma.mutation.deleteUser({ where: {
-      id: args.userId,
+      id: userId,
     }}, info);
   },
-  createPost(parent, args, { db, pubSub }, info) {
-    const { title, body, published, authorId } = args.data;
-
-    const userExists = db.users.some((u) => u.id === authorId);
-
-    if (!userExists) {
-      throw new Error(`User with id ${authorId} does not exist!`);
-    }
-
-    const post = {
-      id: uuid(),
-      title,
-      body,
-      published,
-      author: authorId,
-    };
-
-    db.posts.push(post);
-
-    if (args.data.published) {
-      pubSub.publish("posts", {
-        post: {
-          mutation: 'CREATED',
-          data: post,
-        }
-      });
-    }
-
-    return post;
+  async createPost(parent, args, { db, pubSub, prisma }, info) {
+    return prisma.mutation.createPost({ data: {
+      title: args.data.title,
+      body: args.data.body,
+      published: args.data.published,
+      author: {
+        connect: {
+          id: args.data.authorId,
+        },
+      }
+    } }, info);
   },
   updatePost(parent, { postId, data }, { pubSub, db }, info) {
     const post = db.posts.find((p) => p.id === postId);
