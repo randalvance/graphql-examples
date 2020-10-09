@@ -1,21 +1,14 @@
 import { v4 as uuid } from "uuid";
 
 export const Mutation = {
-  createUser(parent, args, { db }, info) {
-    const emailTaken = db.users.some(
-      (u) => u.email.toLowerCase() === args.data.email.toLowerCase()
-    );
+  async createUser(parent, args, { db, prisma }, info) {
+    const emailTaken = await prisma.exists.User({ email: args.data.email });
 
     if (emailTaken) {
       throw new Error(`Email ${args.data.email} is already taken!`);
     }
 
-    const user = {
-      id: uuid(),
-      ...args.data,
-    };
-
-    db.users.push(user);
+    const user = await prisma.mutation.createUser({ data: args.data }, info);
 
     return user;
   },
