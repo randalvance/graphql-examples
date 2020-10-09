@@ -41,27 +41,16 @@ export const Mutation = {
 
     return user;
   },
-  deleteUser(parent, args, { db }, info) {
-    const { userId } = args;
-    const userToDelete = db.users.find((u) => u.id === userId);
+  async deleteUser(parent, args, { db, prisma }, info) {
+    const userExists = await prisma.exists.User({ id: args.userId });
 
-    if (!userToDelete) {
-      throw new Error(`User with id ${userId} does not exist!`);
+    if (!userExists) {
+      throw new Error(`User with id ${args.userId} does not exist!`);
     }
 
-    db.users = db.users.filter((u) => u.id !== userId);
-    db.posts = db.posts.filter((post) => {
-      const match = post.author === userId;
-
-      if (match) {
-        comments = db.comments.filter((c) => c.post === post.id);
-      }
-
-      return !match;
-    });
-    db.comments = db.comments.filter((c) => c.author !== userId);
-
-    return userToDelete;
+    return prisma.mutation.deleteUser({ where: {
+      id: args.userId,
+    }}, info);
   },
   createPost(parent, args, { db, pubSub }, info) {
     const { title, body, published, authorId } = args.data;
