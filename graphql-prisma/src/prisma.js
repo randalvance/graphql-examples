@@ -1,50 +1,50 @@
 import { Prisma } from 'prisma-binding';
 
-const prisma = new Prisma({
+export const prisma = new Prisma({
     typeDefs: 'src/prisma.graphql',
     endpoint: 'http://localhost:4466',
 });
 
-const createPostForUser = async (authorId, data) => {
-    const userExists = await prisma.exists.User({ id: authorId });
+// const createPostForUser = async (authorId, data) => {
+//     const userExists = await prisma.exists.User({ id: authorId });
 
-    if (!userExists) {
-        throw new Error('User not found');
-    }
+//     if (!userExists) {
+//         throw new Error('User not found');
+//     }
 
-    const post = await prisma.mutation.createPost({
-        data: {
-            ...data,
-            author: {
-                connect: {
-                    id: authorId,
-                },
-            },
-        },
-    }, `{
-        id
-        author {
-            id
-            name
-            email
-            posts {
-                id
-                title
-                published
-            }
-        }
-    }`);
+//     const post = await prisma.mutation.createPost({
+//         data: {
+//             ...data,
+//             author: {
+//                 connect: {
+//                     id: authorId,
+//                 },
+//             },
+//         },
+//     }, `{
+//         id
+//         author {
+//             id
+//             name
+//             email
+//             posts {
+//                 id
+//                 title
+//                 published
+//             }
+//         }
+//     }`);
 
-    return post.author;
-};
+//     return post.author;
+// };
 
-createPostForUser('ckfus90kr001g0793f80bj17s', {
-    title: 'A Dog\'s Tale',
-    body: 'The dog died at the end.',
-    published: true
-}).then((user) => {
-    console.log(JSON.stringify(user, null, 4));
-});
+// createPostForUser('ckfus90kr001g0793f80bj17s', {
+//     title: 'A Dog\'s Tale',
+//     body: 'The dog died at the end.',
+//     published: true
+// }).then((user) => {
+//     console.log(JSON.stringify(user, null, 4));
+// });
 
 /*
 
