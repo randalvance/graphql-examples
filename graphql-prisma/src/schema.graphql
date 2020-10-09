@@ -74,7 +74,6 @@ input CreatePostInput {
   title: String!
   body: String!
   published: Boolean!
-  authorId: ID!
 }
 
 input CreateCommentInput {

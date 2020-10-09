@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const jwtSecret = 'somesecret';
+import { config } from '../auth/config';
+import { getUserId } from '../auth/getUserId';
 
 export const Mutation = {
   async createUser(parent, { data }, { prisma }, info) {
@@ -20,7 +21,7 @@ export const Mutation = {
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, jwtSecret),
+      token: jwt.sign({ userId: user.id }, config.jwtSecret),
     };
   },
   async updateUser(parent, { userId, data }, { prisma }, info) {
@@ -37,14 +38,16 @@ export const Mutation = {
       id: userId,
     }}, info);
   },
-  async createPost(parent, args, { prisma }, info) {
+  async createPost(parent, args, { prisma, request }, info) {
+    const userId = getUserId(request);
+
     return prisma.mutation.createPost({ data: {
       title: args.data.title,
       body: args.data.body,
       published: args.data.published,
       author: {
         connect: {
-          id: args.data.authorId,
+          id: userId,
         },
       }
     } }, info);
@@ -105,7 +108,7 @@ export const Mutation = {
 
     return {
       user,
-      token: jwt.sign({ userId: user.id }, jwtSecret),
+      token: jwt.sign({ userId: user.id }, config.jwtSecret),
     };
   }
 };
