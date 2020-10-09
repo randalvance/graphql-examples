@@ -3,26 +3,16 @@ import { GraphQLServer, PubSub } from "graphql-yoga";
 import { prisma } from './prisma';
 import { db } from "./data/db";
 import {
-  Query,
-  Mutation,
-  Subscription,
-  User,
-  Post,
-  Comment,
+  resolvers,
+  fragmentReplacements
 } from "./resolvers";
 
 const pubSub = new PubSub();
 
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
-  resolvers: {
-    Query,
-    Mutation,
-    Subscription,
-    User,
-    Post,
-    Comment,
-  },
+  resolvers,
+  fragmentReplacements,
   context: (request) => {
     return {
       db,
