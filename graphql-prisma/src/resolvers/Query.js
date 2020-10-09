@@ -29,8 +29,8 @@ export const Query = {
 
         return prisma.query.posts(opArgs, info);
     },
-    comments(parent, args, { db }, info) {
-        return db.comments;
+    comments(parent, args, { db, prisma }, info) {
+        return prisma.query.comments(null, info);
     },
     me(parent, args, { db }, info) {
         return {
