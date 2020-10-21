@@ -1,0 +1,33 @@
+type Query {
+  servers: [Server!]!
+  items(query: String): [Item!]!
+}
+
+type Server {
+  id: ID!
+  name: String!
+  players: [Player!]!
+  region: String!
+}
+
+type Player {
+  id: ID!
+  name: String!
+  level: Int!
+  server: Server!
+}
+
+type Item {
+  id: ID!
+  name: String!
+  price: Int!
+  weight: Float!
+  category: ItemCategory!
+  # players: [ItemPosession!]! @relation(name: "ItemPosessionToItem")
+}
+
+enum ItemCategory {
+  CONSUMABLE
+  WEAPON
+  ARMOR
+}

@@ -1,0 +1,28 @@
+type Query {
+    players: [Player!]!
+    servers: [Server!]!
+}
+
+type Mutation {
+    createPlayer(data: CreatePlayerInput!): Player!
+}
+
+type Player {
+    id: ID!
+    name: String!
+    level: Int!
+    serverId: ID!
+    server: Server!
+}
+
+type Server {
+    id: ID!
+    name: String!
+    region: String!
+}
+
+input CreatePlayerInput {
+    id: ID!
+    name: String!
+    level: Int!
+}

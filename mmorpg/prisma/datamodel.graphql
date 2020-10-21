@@ -1,0 +1,37 @@
+type Server {
+  id: ID! @id
+  name: String!
+  players: [Player!]! @relation(name: "ServerToUser", onDelete: CASCADE)
+  region: String!
+}
+
+type Player {
+  id: ID! @id
+  name: String!
+  level: Int!
+  inventory: [ItemPosession!]! @relation(name: "PlayerToItemPosession")
+  server: Server! @relation(name: "ServerToUser", onDelete: SET_NULL)
+  party: [Player!]! @relation(name: "PartyMembers")
+}
+
+type ItemPosession {
+  id: ID! @id
+  quantity: Int!
+  item: Item! @relation(name: "ItemPosessionToItem")
+  player: Player! @relation(name: "PlayerToItemPosession")
+}
+
+type Item {
+  id: ID! @id
+  name: String!
+  price: Int!
+  weight: Float!
+  category: ItemCategory!
+  players: [ItemPosession!]! @relation(name: "ItemPosessionToItem")
+}
+
+enum ItemCategory {
+  CONSUMABLE
+  WEAPON
+  ARMOR
+}
