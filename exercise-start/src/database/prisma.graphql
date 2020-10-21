@@ -1,0 +1,1608 @@
+#
+type BatchPayload {
+  # The number of nodes that have been affected by the Batch operation.
+  count: Long!
+}
+
+input ItemCreateInput {
+  id: ID
+  name: String!
+  price: Int!
+  weight: Float!
+  category: ItemCategory!
+  players: ItemPosessionCreateManyWithoutItemInput
+}
+
+input ItemCreateOneWithoutPlayersInput {
+  create: ItemCreateWithoutPlayersInput
+  connect: ItemWhereUniqueInput
+}
+
+input ItemCreateWithoutPlayersInput {
+  id: ID
+  name: String!
+  price: Int!
+  weight: Float!
+  category: ItemCategory!
+}
+
+input ItemPosessionCreateInput {
+  id: ID
+  quantity: Int!
+  item: ItemCreateOneWithoutPlayersInput!
+  player: PlayerCreateOneWithoutInventoryInput!
+}
+
+input ItemPosessionCreateManyWithoutItemInput {
+  create: [ItemPosessionCreateWithoutItemInput!]
+  connect: [ItemPosessionWhereUniqueInput!]
+}
+
+input ItemPosessionCreateManyWithoutPlayerInput {
+  create: [ItemPosessionCreateWithoutPlayerInput!]
+  connect: [ItemPosessionWhereUniqueInput!]
+}
+
+input ItemPosessionCreateWithoutItemInput {
+  id: ID
+  quantity: Int!
+  player: PlayerCreateOneWithoutInventoryInput!
+}
+
+input ItemPosessionCreateWithoutPlayerInput {
+  id: ID
+  quantity: Int!
+  item: ItemCreateOneWithoutPlayersInput!
+}
+
+type ItemPosessionPreviousValues {
+  id: ID!
+  quantity: Int!
+}
+
+input ItemPosessionScalarWhereInput {
+  # Logical AND on all given filters.
+  AND: [ItemPosessionScalarWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [ItemPosessionScalarWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [ItemPosessionScalarWhereInput!]
+
+  #
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+
+  #
+  quantity: Int
+
+  # All values that are not equal to given value.
+  quantity_not: Int
+
+  # All values that are contained in given list.
+  quantity_in: [Int!]
+
+  # All values that are not contained in given list.
+  quantity_not_in: [Int!]
+
+  # All values less than the given value.
+  quantity_lt: Int
+
+  # All values less than or equal the given value.
+  quantity_lte: Int
+
+  # All values greater than the given value.
+  quantity_gt: Int
+
+  # All values greater than or equal the given value.
+  quantity_gte: Int
+}
+
+type ItemPosessionSubscriptionPayload {
+  mutation: MutationType!
+  node: ItemPosession
+  updatedFields: [String!]
+  previousValues: ItemPosessionPreviousValues
+}
+
+input ItemPosessionSubscriptionWhereInput {
+  # Logical AND on all given filters.
+  AND: [ItemPosessionSubscriptionWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [ItemPosessionSubscriptionWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [ItemPosessionSubscriptionWhereInput!]
+
+  # The subscription event gets dispatched when it's listed in mutation_in
+  mutation_in: [MutationType!]
+
+  # The subscription event gets only dispatched when one of the updated fields names is included in this list
+  updatedFields_contains: String
+
+  # The subscription event gets only dispatched when all of the field names included in this list have been updated
+  updatedFields_contains_every: [String!]
+
+  # The subscription event gets only dispatched when some of the field names included in this list have been updated
+  updatedFields_contains_some: [String!]
+  node: ItemPosessionWhereInput
+}
+
+input ItemPosessionUpdateInput {
+  quantity: Int
+  item: ItemUpdateOneRequiredWithoutPlayersInput
+  player: PlayerUpdateOneRequiredWithoutInventoryInput
+}
+
+input ItemPosessionUpdateManyDataInput {
+  quantity: Int
+}
+
+input ItemPosessionUpdateManyMutationInput {
+  quantity: Int
+}
+
+input ItemPosessionUpdateManyWithWhereNestedInput {
+  where: ItemPosessionScalarWhereInput!
+  data: ItemPosessionUpdateManyDataInput!
+}
+
+input ItemPosessionUpdateManyWithoutItemInput {
+  create: [ItemPosessionCreateWithoutItemInput!]
+  connect: [ItemPosessionWhereUniqueInput!]
+  set: [ItemPosessionWhereUniqueInput!]
+  disconnect: [ItemPosessionWhereUniqueInput!]
+  delete: [ItemPosessionWhereUniqueInput!]
+  update: [ItemPosessionUpdateWithWhereUniqueWithoutItemInput!]
+  updateMany: [ItemPosessionUpdateManyWithWhereNestedInput!]
+  deleteMany: [ItemPosessionScalarWhereInput!]
+  upsert: [ItemPosessionUpsertWithWhereUniqueWithoutItemInput!]
+}
+
+input ItemPosessionUpdateManyWithoutPlayerInput {
+  create: [ItemPosessionCreateWithoutPlayerInput!]
+  connect: [ItemPosessionWhereUniqueInput!]
+  set: [ItemPosessionWhereUniqueInput!]
+  disconnect: [ItemPosessionWhereUniqueInput!]
+  delete: [ItemPosessionWhereUniqueInput!]
+  update: [ItemPosessionUpdateWithWhereUniqueWithoutPlayerInput!]
+  updateMany: [ItemPosessionUpdateManyWithWhereNestedInput!]
+  deleteMany: [ItemPosessionScalarWhereInput!]
+  upsert: [ItemPosessionUpsertWithWhereUniqueWithoutPlayerInput!]
+}
+
+input ItemPosessionUpdateWithWhereUniqueWithoutItemInput {
+  where: ItemPosessionWhereUniqueInput!
+  data: ItemPosessionUpdateWithoutItemDataInput!
+}
+
+input ItemPosessionUpdateWithWhereUniqueWithoutPlayerInput {
+  where: ItemPosessionWhereUniqueInput!
+  data: ItemPosessionUpdateWithoutPlayerDataInput!
+}
+
+input ItemPosessionUpdateWithoutItemDataInput {
+  quantity: Int
+  player: PlayerUpdateOneRequiredWithoutInventoryInput
+}
+
+input ItemPosessionUpdateWithoutPlayerDataInput {
+  quantity: Int
+  item: ItemUpdateOneRequiredWithoutPlayersInput
+}
+
+input ItemPosessionUpsertWithWhereUniqueWithoutItemInput {
+  where: ItemPosessionWhereUniqueInput!
+  update: ItemPosessionUpdateWithoutItemDataInput!
+  create: ItemPosessionCreateWithoutItemInput!
+}
+
+input ItemPosessionUpsertWithWhereUniqueWithoutPlayerInput {
+  where: ItemPosessionWhereUniqueInput!
+  update: ItemPosessionUpdateWithoutPlayerDataInput!
+  create: ItemPosessionCreateWithoutPlayerInput!
+}
+
+type ItemPreviousValues {
+  id: ID!
+  name: String!
+  price: Int!
+  weight: Float!
+  category: ItemCategory!
+}
+
+type ItemSubscriptionPayload {
+  mutation: MutationType!
+  node: Item
+  updatedFields: [String!]
+  previousValues: ItemPreviousValues
+}
+
+input ItemSubscriptionWhereInput {
+  # Logical AND on all given filters.
+  AND: [ItemSubscriptionWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [ItemSubscriptionWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [ItemSubscriptionWhereInput!]
+
+  # The subscription event gets dispatched when it's listed in mutation_in
+  mutation_in: [MutationType!]
+
+  # The subscription event gets only dispatched when one of the updated fields names is included in this list
+  updatedFields_contains: String
+
+  # The subscription event gets only dispatched when all of the field names included in this list have been updated
+  updatedFields_contains_every: [String!]
+
+  # The subscription event gets only dispatched when some of the field names included in this list have been updated
+  updatedFields_contains_some: [String!]
+  node: ItemWhereInput
+}
+
+input ItemUpdateInput {
+  name: String
+  price: Int
+  weight: Float
+  category: ItemCategory
+  players: ItemPosessionUpdateManyWithoutItemInput
+}
+
+input ItemUpdateManyMutationInput {
+  name: String
+  price: Int
+  weight: Float
+  category: ItemCategory
+}
+
+input ItemUpdateOneRequiredWithoutPlayersInput {
+  create: ItemCreateWithoutPlayersInput
+  connect: ItemWhereUniqueInput
+  update: ItemUpdateWithoutPlayersDataInput
+  upsert: ItemUpsertWithoutPlayersInput
+}
+
+input ItemUpdateWithoutPlayersDataInput {
+  name: String
+  price: Int
+  weight: Float
+  category: ItemCategory
+}
+
+input ItemUpsertWithoutPlayersInput {
+  update: ItemUpdateWithoutPlayersDataInput!
+  create: ItemCreateWithoutPlayersInput!
+}
+
+# Raw JSON value
+scalar Json
+
+type Mutation {
+  createServer(data: ServerCreateInput!): Server!
+  createItemPosession(data: ItemPosessionCreateInput!): ItemPosession!
+  createItem(data: ItemCreateInput!): Item!
+  createPlayer(data: PlayerCreateInput!): Player!
+  updateServer(data: ServerUpdateInput!, where: ServerWhereUniqueInput!): Server
+  updateItemPosession(
+    data: ItemPosessionUpdateInput!
+    where: ItemPosessionWhereUniqueInput!
+  ): ItemPosession
+  updateItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
+  updatePlayer(data: PlayerUpdateInput!, where: PlayerWhereUniqueInput!): Player
+  deleteServer(where: ServerWhereUniqueInput!): Server
+  deleteItemPosession(where: ItemPosessionWhereUniqueInput!): ItemPosession
+  deleteItem(where: ItemWhereUniqueInput!): Item
+  deletePlayer(where: PlayerWhereUniqueInput!): Player
+  upsertServer(
+    where: ServerWhereUniqueInput!
+    create: ServerCreateInput!
+    update: ServerUpdateInput!
+  ): Server!
+  upsertItemPosession(
+    where: ItemPosessionWhereUniqueInput!
+    create: ItemPosessionCreateInput!
+    update: ItemPosessionUpdateInput!
+  ): ItemPosession!
+  upsertItem(
+    where: ItemWhereUniqueInput!
+    create: ItemCreateInput!
+    update: ItemUpdateInput!
+  ): Item!
+  upsertPlayer(
+    where: PlayerWhereUniqueInput!
+    create: PlayerCreateInput!
+    update: PlayerUpdateInput!
+  ): Player!
+  updateManyServers(
+    data: ServerUpdateManyMutationInput!
+    where: ServerWhereInput
+  ): BatchPayload!
+  updateManyItemPosessions(
+    data: ItemPosessionUpdateManyMutationInput!
+    where: ItemPosessionWhereInput
+  ): BatchPayload!
+  updateManyItems(
+    data: ItemUpdateManyMutationInput!
+    where: ItemWhereInput
+  ): BatchPayload!
+  updateManyPlayers(
+    data: PlayerUpdateManyMutationInput!
+    where: PlayerWhereInput
+  ): BatchPayload!
+  deleteManyServers(where: ServerWhereInput): BatchPayload!
+  deleteManyItemPosessions(where: ItemPosessionWhereInput): BatchPayload!
+  deleteManyItems(where: ItemWhereInput): BatchPayload!
+  deleteManyPlayers(where: PlayerWhereInput): BatchPayload!
+  executeRaw(database: PrismaDatabase, query: String!): Json!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+input PlayerCreateInput {
+  id: ID
+  name: String!
+  level: Int!
+  inventory: ItemPosessionCreateManyWithoutPlayerInput
+  server: ServerCreateOneWithoutPlayersInput!
+  party: PlayerCreateManyInput
+}
+
+input PlayerCreateManyInput {
+  create: [PlayerCreateInput!]
+  connect: [PlayerWhereUniqueInput!]
+}
+
+input PlayerCreateManyWithoutServerInput {
+  create: [PlayerCreateWithoutServerInput!]
+  connect: [PlayerWhereUniqueInput!]
+}
+
+input PlayerCreateOneWithoutInventoryInput {
+  create: PlayerCreateWithoutInventoryInput
+  connect: PlayerWhereUniqueInput
+}
+
+input PlayerCreateWithoutInventoryInput {
+  id: ID
+  name: String!
+  level: Int!
+  server: ServerCreateOneWithoutPlayersInput!
+  party: PlayerCreateManyInput
+}
+
+input PlayerCreateWithoutServerInput {
+  id: ID
+  name: String!
+  level: Int!
+  inventory: ItemPosessionCreateManyWithoutPlayerInput
+  party: PlayerCreateManyInput
+}
+
+type PlayerPreviousValues {
+  id: ID!
+  name: String!
+  level: Int!
+}
+
+input PlayerScalarWhereInput {
+  # Logical AND on all given filters.
+  AND: [PlayerScalarWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [PlayerScalarWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [PlayerScalarWhereInput!]
+
+  #
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  # All values that are not equal to given value.
+  name_not: String
+
+  # All values that are contained in given list.
+  name_in: [String!]
+
+  # All values that are not contained in given list.
+  name_not_in: [String!]
+
+  # All values less than the given value.
+  name_lt: String
+
+  # All values less than or equal the given value.
+  name_lte: String
+
+  # All values greater than the given value.
+  name_gt: String
+
+  # All values greater than or equal the given value.
+  name_gte: String
+
+  # All values containing the given string.
+  name_contains: String
+
+  # All values not containing the given string.
+  name_not_contains: String
+
+  # All values starting with the given string.
+  name_starts_with: String
+
+  # All values not starting with the given string.
+  name_not_starts_with: String
+
+  # All values ending with the given string.
+  name_ends_with: String
+
+  # All values not ending with the given string.
+  name_not_ends_with: String
+
+  #
+  level: Int
+
+  # All values that are not equal to given value.
+  level_not: Int
+
+  # All values that are contained in given list.
+  level_in: [Int!]
+
+  # All values that are not contained in given list.
+  level_not_in: [Int!]
+
+  # All values less than the given value.
+  level_lt: Int
+
+  # All values less than or equal the given value.
+  level_lte: Int
+
+  # All values greater than the given value.
+  level_gt: Int
+
+  # All values greater than or equal the given value.
+  level_gte: Int
+}
+
+type PlayerSubscriptionPayload {
+  mutation: MutationType!
+  node: Player
+  updatedFields: [String!]
+  previousValues: PlayerPreviousValues
+}
+
+input PlayerSubscriptionWhereInput {
+  # Logical AND on all given filters.
+  AND: [PlayerSubscriptionWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [PlayerSubscriptionWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [PlayerSubscriptionWhereInput!]
+
+  # The subscription event gets dispatched when it's listed in mutation_in
+  mutation_in: [MutationType!]
+
+  # The subscription event gets only dispatched when one of the updated fields names is included in this list
+  updatedFields_contains: String
+
+  # The subscription event gets only dispatched when all of the field names included in this list have been updated
+  updatedFields_contains_every: [String!]
+
+  # The subscription event gets only dispatched when some of the field names included in this list have been updated
+  updatedFields_contains_some: [String!]
+  node: PlayerWhereInput
+}
+
+input PlayerUpdateDataInput {
+  name: String
+  level: Int
+  inventory: ItemPosessionUpdateManyWithoutPlayerInput
+  server: ServerUpdateOneRequiredWithoutPlayersInput
+  party: PlayerUpdateManyInput
+}
+
+input PlayerUpdateInput {
+  name: String
+  level: Int
+  inventory: ItemPosessionUpdateManyWithoutPlayerInput
+  server: ServerUpdateOneRequiredWithoutPlayersInput
+  party: PlayerUpdateManyInput
+}
+
+input PlayerUpdateManyDataInput {
+  name: String
+  level: Int
+}
+
+input PlayerUpdateManyInput {
+  create: [PlayerCreateInput!]
+  connect: [PlayerWhereUniqueInput!]
+  set: [PlayerWhereUniqueInput!]
+  disconnect: [PlayerWhereUniqueInput!]
+  delete: [PlayerWhereUniqueInput!]
+  update: [PlayerUpdateWithWhereUniqueNestedInput!]
+  updateMany: [PlayerUpdateManyWithWhereNestedInput!]
+  deleteMany: [PlayerScalarWhereInput!]
+  upsert: [PlayerUpsertWithWhereUniqueNestedInput!]
+}
+
+input PlayerUpdateManyMutationInput {
+  name: String
+  level: Int
+}
+
+input PlayerUpdateManyWithWhereNestedInput {
+  where: PlayerScalarWhereInput!
+  data: PlayerUpdateManyDataInput!
+}
+
+input PlayerUpdateManyWithoutServerInput {
+  create: [PlayerCreateWithoutServerInput!]
+  connect: [PlayerWhereUniqueInput!]
+  set: [PlayerWhereUniqueInput!]
+  disconnect: [PlayerWhereUniqueInput!]
+  delete: [PlayerWhereUniqueInput!]
+  update: [PlayerUpdateWithWhereUniqueWithoutServerInput!]
+  updateMany: [PlayerUpdateManyWithWhereNestedInput!]
+  deleteMany: [PlayerScalarWhereInput!]
+  upsert: [PlayerUpsertWithWhereUniqueWithoutServerInput!]
+}
+
+input PlayerUpdateOneRequiredWithoutInventoryInput {
+  create: PlayerCreateWithoutInventoryInput
+  connect: PlayerWhereUniqueInput
+  update: PlayerUpdateWithoutInventoryDataInput
+  upsert: PlayerUpsertWithoutInventoryInput
+}
+
+input PlayerUpdateWithWhereUniqueNestedInput {
+  where: PlayerWhereUniqueInput!
+  data: PlayerUpdateDataInput!
+}
+
+input PlayerUpdateWithWhereUniqueWithoutServerInput {
+  where: PlayerWhereUniqueInput!
+  data: PlayerUpdateWithoutServerDataInput!
+}
+
+input PlayerUpdateWithoutInventoryDataInput {
+  name: String
+  level: Int
+  server: ServerUpdateOneRequiredWithoutPlayersInput
+  party: PlayerUpdateManyInput
+}
+
+input PlayerUpdateWithoutServerDataInput {
+  name: String
+  level: Int
+  inventory: ItemPosessionUpdateManyWithoutPlayerInput
+  party: PlayerUpdateManyInput
+}
+
+input PlayerUpsertWithWhereUniqueNestedInput {
+  where: PlayerWhereUniqueInput!
+  update: PlayerUpdateDataInput!
+  create: PlayerCreateInput!
+}
+
+input PlayerUpsertWithWhereUniqueWithoutServerInput {
+  where: PlayerWhereUniqueInput!
+  update: PlayerUpdateWithoutServerDataInput!
+  create: PlayerCreateWithoutServerInput!
+}
+
+input PlayerUpsertWithoutInventoryInput {
+  update: PlayerUpdateWithoutInventoryDataInput!
+  create: PlayerCreateWithoutInventoryInput!
+}
+
+enum PrismaDatabase {
+  default
+}
+
+input ServerCreateInput {
+  id: ID
+  name: String!
+  region: String!
+  players: PlayerCreateManyWithoutServerInput
+}
+
+input ServerCreateOneWithoutPlayersInput {
+  create: ServerCreateWithoutPlayersInput
+  connect: ServerWhereUniqueInput
+}
+
+input ServerCreateWithoutPlayersInput {
+  id: ID
+  name: String!
+  region: String!
+}
+
+type ServerPreviousValues {
+  id: ID!
+  name: String!
+  region: String!
+}
+
+type ServerSubscriptionPayload {
+  mutation: MutationType!
+  node: Server
+  updatedFields: [String!]
+  previousValues: ServerPreviousValues
+}
+
+input ServerSubscriptionWhereInput {
+  # Logical AND on all given filters.
+  AND: [ServerSubscriptionWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [ServerSubscriptionWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [ServerSubscriptionWhereInput!]
+
+  # The subscription event gets dispatched when it's listed in mutation_in
+  mutation_in: [MutationType!]
+
+  # The subscription event gets only dispatched when one of the updated fields names is included in this list
+  updatedFields_contains: String
+
+  # The subscription event gets only dispatched when all of the field names included in this list have been updated
+  updatedFields_contains_every: [String!]
+
+  # The subscription event gets only dispatched when some of the field names included in this list have been updated
+  updatedFields_contains_some: [String!]
+  node: ServerWhereInput
+}
+
+input ServerUpdateInput {
+  name: String
+  region: String
+  players: PlayerUpdateManyWithoutServerInput
+}
+
+input ServerUpdateManyMutationInput {
+  name: String
+  region: String
+}
+
+input ServerUpdateOneRequiredWithoutPlayersInput {
+  create: ServerCreateWithoutPlayersInput
+  connect: ServerWhereUniqueInput
+  update: ServerUpdateWithoutPlayersDataInput
+  upsert: ServerUpsertWithoutPlayersInput
+}
+
+input ServerUpdateWithoutPlayersDataInput {
+  name: String
+  region: String
+}
+
+input ServerUpsertWithoutPlayersInput {
+  update: ServerUpdateWithoutPlayersDataInput!
+  create: ServerCreateWithoutPlayersInput!
+}
+
+type Subscription {
+  server(where: ServerSubscriptionWhereInput): ServerSubscriptionPayload
+  itemPosession(
+    where: ItemPosessionSubscriptionWhereInput
+  ): ItemPosessionSubscriptionPayload
+  item(where: ItemSubscriptionWhereInput): ItemSubscriptionPayload
+  player(where: PlayerSubscriptionWhereInput): PlayerSubscriptionPayload
+}
+
+type AggregateItem {
+  count: Int!
+}
+
+type AggregateItemPosession {
+  count: Int!
+}
+
+type AggregatePlayer {
+  count: Int!
+}
+
+type AggregateServer {
+  count: Int!
+}
+
+type Item implements Node {
+  id: ID!
+  name: String!
+  price: Int!
+  weight: Float!
+  category: ItemCategory!
+  players(
+    where: ItemPosessionWhereInput
+    orderBy: ItemPosessionOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [ItemPosession!]
+}
+
+enum ItemCategory {
+  CONSUMABLE
+  WEAPON
+  ARMOR
+}
+
+# A connection to a list of items.
+type ItemConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ItemEdge]!
+  aggregate: AggregateItem!
+}
+
+# An edge in a connection.
+type ItemEdge {
+  # The item at the end of the edge.
+  node: Item!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+enum ItemOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  price_ASC
+  price_DESC
+  weight_ASC
+  weight_DESC
+  category_ASC
+  category_DESC
+}
+
+type ItemPosession implements Node {
+  id: ID!
+  quantity: Int!
+  item: Item!
+  player: Player!
+}
+
+# A connection to a list of items.
+type ItemPosessionConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ItemPosessionEdge]!
+  aggregate: AggregateItemPosession!
+}
+
+# An edge in a connection.
+type ItemPosessionEdge {
+  # The item at the end of the edge.
+  node: ItemPosession!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+enum ItemPosessionOrderByInput {
+  id_ASC
+  id_DESC
+  quantity_ASC
+  quantity_DESC
+}
+
+input ItemPosessionWhereInput {
+  # Logical AND on all given filters.
+  AND: [ItemPosessionWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [ItemPosessionWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [ItemPosessionWhereInput!]
+
+  #
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+
+  #
+  quantity: Int
+
+  # All values that are not equal to given value.
+  quantity_not: Int
+
+  # All values that are contained in given list.
+  quantity_in: [Int!]
+
+  # All values that are not contained in given list.
+  quantity_not_in: [Int!]
+
+  # All values less than the given value.
+  quantity_lt: Int
+
+  # All values less than or equal the given value.
+  quantity_lte: Int
+
+  # All values greater than the given value.
+  quantity_gt: Int
+
+  # All values greater than or equal the given value.
+  quantity_gte: Int
+  item: ItemWhereInput
+  player: PlayerWhereInput
+}
+
+input ItemPosessionWhereUniqueInput {
+  id: ID
+}
+
+input ItemWhereInput {
+  # Logical AND on all given filters.
+  AND: [ItemWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [ItemWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [ItemWhereInput!]
+
+  #
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  # All values that are not equal to given value.
+  name_not: String
+
+  # All values that are contained in given list.
+  name_in: [String!]
+
+  # All values that are not contained in given list.
+  name_not_in: [String!]
+
+  # All values less than the given value.
+  name_lt: String
+
+  # All values less than or equal the given value.
+  name_lte: String
+
+  # All values greater than the given value.
+  name_gt: String
+
+  # All values greater than or equal the given value.
+  name_gte: String
+
+  # All values containing the given string.
+  name_contains: String
+
+  # All values not containing the given string.
+  name_not_contains: String
+
+  # All values starting with the given string.
+  name_starts_with: String
+
+  # All values not starting with the given string.
+  name_not_starts_with: String
+
+  # All values ending with the given string.
+  name_ends_with: String
+
+  # All values not ending with the given string.
+  name_not_ends_with: String
+
+  #
+  price: Int
+
+  # All values that are not equal to given value.
+  price_not: Int
+
+  # All values that are contained in given list.
+  price_in: [Int!]
+
+  # All values that are not contained in given list.
+  price_not_in: [Int!]
+
+  # All values less than the given value.
+  price_lt: Int
+
+  # All values less than or equal the given value.
+  price_lte: Int
+
+  # All values greater than the given value.
+  price_gt: Int
+
+  # All values greater than or equal the given value.
+  price_gte: Int
+
+  #
+  weight: Float
+
+  # All values that are not equal to given value.
+  weight_not: Float
+
+  # All values that are contained in given list.
+  weight_in: [Float!]
+
+  # All values that are not contained in given list.
+  weight_not_in: [Float!]
+
+  # All values less than the given value.
+  weight_lt: Float
+
+  # All values less than or equal the given value.
+  weight_lte: Float
+
+  # All values greater than the given value.
+  weight_gt: Float
+
+  # All values greater than or equal the given value.
+  weight_gte: Float
+
+  #
+  category: ItemCategory
+
+  # All values that are not equal to given value.
+  category_not: ItemCategory
+
+  # All values that are contained in given list.
+  category_in: [ItemCategory!]
+
+  # All values that are not contained in given list.
+  category_not_in: [ItemCategory!]
+  players_every: ItemPosessionWhereInput
+  players_some: ItemPosessionWhereInput
+  players_none: ItemPosessionWhereInput
+}
+
+input ItemWhereUniqueInput {
+  id: ID
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+type Player implements Node {
+  id: ID!
+  name: String!
+  level: Int!
+  inventory(
+    where: ItemPosessionWhereInput
+    orderBy: ItemPosessionOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [ItemPosession!]
+  server: Server!
+  party(
+    where: PlayerWhereInput
+    orderBy: PlayerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Player!]
+}
+
+# A connection to a list of items.
+type PlayerConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [PlayerEdge]!
+  aggregate: AggregatePlayer!
+}
+
+# An edge in a connection.
+type PlayerEdge {
+  # The item at the end of the edge.
+  node: Player!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+enum PlayerOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  level_ASC
+  level_DESC
+}
+
+input PlayerWhereInput {
+  # Logical AND on all given filters.
+  AND: [PlayerWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [PlayerWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [PlayerWhereInput!]
+
+  #
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  # All values that are not equal to given value.
+  name_not: String
+
+  # All values that are contained in given list.
+  name_in: [String!]
+
+  # All values that are not contained in given list.
+  name_not_in: [String!]
+
+  # All values less than the given value.
+  name_lt: String
+
+  # All values less than or equal the given value.
+  name_lte: String
+
+  # All values greater than the given value.
+  name_gt: String
+
+  # All values greater than or equal the given value.
+  name_gte: String
+
+  # All values containing the given string.
+  name_contains: String
+
+  # All values not containing the given string.
+  name_not_contains: String
+
+  # All values starting with the given string.
+  name_starts_with: String
+
+  # All values not starting with the given string.
+  name_not_starts_with: String
+
+  # All values ending with the given string.
+  name_ends_with: String
+
+  # All values not ending with the given string.
+  name_not_ends_with: String
+
+  #
+  level: Int
+
+  # All values that are not equal to given value.
+  level_not: Int
+
+  # All values that are contained in given list.
+  level_in: [Int!]
+
+  # All values that are not contained in given list.
+  level_not_in: [Int!]
+
+  # All values less than the given value.
+  level_lt: Int
+
+  # All values less than or equal the given value.
+  level_lte: Int
+
+  # All values greater than the given value.
+  level_gt: Int
+
+  # All values greater than or equal the given value.
+  level_gte: Int
+  inventory_every: ItemPosessionWhereInput
+  inventory_some: ItemPosessionWhereInput
+  inventory_none: ItemPosessionWhereInput
+  server: ServerWhereInput
+  party_every: PlayerWhereInput
+  party_some: PlayerWhereInput
+  party_none: PlayerWhereInput
+}
+
+input PlayerWhereUniqueInput {
+  id: ID
+}
+
+type Query {
+  servers(
+    where: ServerWhereInput
+    orderBy: ServerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Server]!
+  itemPosessions(
+    where: ItemPosessionWhereInput
+    orderBy: ItemPosessionOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [ItemPosession]!
+  items(
+    where: ItemWhereInput
+    orderBy: ItemOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Item]!
+  players(
+    where: PlayerWhereInput
+    orderBy: PlayerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Player]!
+  server(where: ServerWhereUniqueInput!): Server
+  itemPosession(where: ItemPosessionWhereUniqueInput!): ItemPosession
+  item(where: ItemWhereUniqueInput!): Item
+  player(where: PlayerWhereUniqueInput!): Player
+  serversConnection(
+    where: ServerWhereInput
+    orderBy: ServerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ServerConnection!
+  itemPosessionsConnection(
+    where: ItemPosessionWhereInput
+    orderBy: ItemPosessionOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ItemPosessionConnection!
+  itemsConnection(
+    where: ItemWhereInput
+    orderBy: ItemOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ItemConnection!
+  playersConnection(
+    where: PlayerWhereInput
+    orderBy: PlayerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PlayerConnection!
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+}
+
+type Server implements Node {
+  id: ID!
+  name: String!
+  players(
+    where: PlayerWhereInput
+    orderBy: PlayerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Player!]
+  region: String!
+}
+
+# A connection to a list of items.
+type ServerConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ServerEdge]!
+  aggregate: AggregateServer!
+}
+
+# An edge in a connection.
+type ServerEdge {
+  # The item at the end of the edge.
+  node: Server!
+
+  # A cursor for use in pagination.
+  cursor: String!
+}
+
+enum ServerOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  region_ASC
+  region_DESC
+}
+
+input ServerWhereInput {
+  # Logical AND on all given filters.
+  AND: [ServerWhereInput!]
+
+  # Logical OR on all given filters.
+  OR: [ServerWhereInput!]
+
+  # Logical NOT on all given filters combined by AND.
+  NOT: [ServerWhereInput!]
+
+  #
+  id: ID
+
+  # All values that are not equal to given value.
+  id_not: ID
+
+  # All values that are contained in given list.
+  id_in: [ID!]
+
+  # All values that are not contained in given list.
+  id_not_in: [ID!]
+
+  # All values less than the given value.
+  id_lt: ID
+
+  # All values less than or equal the given value.
+  id_lte: ID
+
+  # All values greater than the given value.
+  id_gt: ID
+
+  # All values greater than or equal the given value.
+  id_gte: ID
+
+  # All values containing the given string.
+  id_contains: ID
+
+  # All values not containing the given string.
+  id_not_contains: ID
+
+  # All values starting with the given string.
+  id_starts_with: ID
+
+  # All values not starting with the given string.
+  id_not_starts_with: ID
+
+  # All values ending with the given string.
+  id_ends_with: ID
+
+  # All values not ending with the given string.
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  # All values that are not equal to given value.
+  name_not: String
+
+  # All values that are contained in given list.
+  name_in: [String!]
+
+  # All values that are not contained in given list.
+  name_not_in: [String!]
+
+  # All values less than the given value.
+  name_lt: String
+
+  # All values less than or equal the given value.
+  name_lte: String
+
+  # All values greater than the given value.
+  name_gt: String
+
+  # All values greater than or equal the given value.
+  name_gte: String
+
+  # All values containing the given string.
+  name_contains: String
+
+  # All values not containing the given string.
+  name_not_contains: String
+
+  # All values starting with the given string.
+  name_starts_with: String
+
+  # All values not starting with the given string.
+  name_not_starts_with: String
+
+  # All values ending with the given string.
+  name_ends_with: String
+
+  # All values not ending with the given string.
+  name_not_ends_with: String
+
+  #
+  region: String
+
+  # All values that are not equal to given value.
+  region_not: String
+
+  # All values that are contained in given list.
+  region_in: [String!]
+
+  # All values that are not contained in given list.
+  region_not_in: [String!]
+
+  # All values less than the given value.
+  region_lt: String
+
+  # All values less than or equal the given value.
+  region_lte: String
+
+  # All values greater than the given value.
+  region_gt: String
+
+  # All values greater than or equal the given value.
+  region_gte: String
+
+  # All values containing the given string.
+  region_contains: String
+
+  # All values not containing the given string.
+  region_not_contains: String
+
+  # All values starting with the given string.
+  region_starts_with: String
+
+  # All values not starting with the given string.
+  region_not_starts_with: String
+
+  # All values ending with the given string.
+  region_ends_with: String
+
+  # All values not ending with the given string.
+  region_not_ends_with: String
+  players_every: PlayerWhereInput
+  players_some: PlayerWhereInput
+  players_none: PlayerWhereInput
+}
+
+input ServerWhereUniqueInput {
+  id: ID
+}
+
+# The `Long` scalar type represents non-fractional signed whole numeric values. Long can represent values between -(2^63) and 2^63 - 1.
+scalar Long
